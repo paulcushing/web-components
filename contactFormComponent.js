@@ -375,7 +375,7 @@ class ContactForm extends HTMLElement {
     }
 
     static get observedAttributes() {
-        return ["apiUrl", "buttonStyle", "buttonText", "dialogTitle", "buttonColor"];
+        return ["apiUrl", "buttonStyle", "buttonText", "dialogTitle", "buttonColor", "token"];
     }
         
     attributeChangedCallback(property, oldValue, newValue) {
@@ -433,6 +433,8 @@ class ContactForm extends HTMLElement {
 
         this.dialogTitle = this.getAttribute('dialogTitle');
 
+        const token = this.getAttribute('token') || '';
+
         /* Listen for click on the button */
         triggerDialogButton.addEventListener('click', function() {
             contactDialog.showModal();
@@ -465,7 +467,7 @@ class ContactForm extends HTMLElement {
         function submitForm() {
             const data = {};
             let errors = [];
-        
+            
             inputs.forEach(input => {
                 data[input.name] = input.value;
             });
@@ -497,6 +499,7 @@ class ContactForm extends HTMLElement {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(data),
                 }).then(response => {
@@ -527,5 +530,3 @@ class ContactForm extends HTMLElement {
 
 
 customElements.define( 'contact-form', ContactForm );
-
-
