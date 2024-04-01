@@ -88,6 +88,7 @@ class ContactForm extends HTMLElement {
 
             h1 {
                 -webkit-tap-highlight-color: transparent;
+                color: #000000;
                 box-sizing: border-box;
                 border-width: 0;
                 border-style: solid;
@@ -115,7 +116,7 @@ class ContactForm extends HTMLElement {
                 box-sizing: border-box;
                 border-style: solid;
                 font-size: 100%;
-                color: inherit;
+                color: #000000;
                 margin: 0;
                 margin-bottom: 1.5rem;
                 width: 100%;
@@ -132,7 +133,7 @@ class ContactForm extends HTMLElement {
                 border-style: solid;
                 font-size: 100%;
                 font-family: inherit;
-                color: inherit;
+                color: #000000;
                 margin: 0;
                 resize: vertical;
                 margin-bottom: 1.5rem;
@@ -222,6 +223,7 @@ class ContactForm extends HTMLElement {
 
             #confirm p {
                 text-align: center;
+                color: #000000;
             }
 
             .loader {
