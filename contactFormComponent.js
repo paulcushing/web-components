@@ -123,6 +123,7 @@ class ContactForm extends HTMLElement {
                 border-width: 1px;
                 border-color: rgb(203 213 225 / 1);
                 padding: 0.8rem;
+                background-color: #ffffff;
             }
 
             .inputarea {
@@ -140,6 +141,7 @@ class ContactForm extends HTMLElement {
                 border-width: 1px;
                 border-color: rgb(203 213 225 / 1);
                 padding: 0.5rem;
+                background-color: #ffffff;
             }
 
             #submit {
@@ -467,7 +469,7 @@ class ContactForm extends HTMLElement {
         function submitForm() {
             const data = {};
             let errors = [];
-            
+
             inputs.forEach(input => {
                 data[input.name] = input.value;
             });
