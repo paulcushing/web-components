@@ -35,6 +35,7 @@ Put the tag on the page where you'd like the button that triggers the Form Dialo
 `<contact-form apiUrl="https://your-api-url"></contact-form>`
 
 ### Attributes:
+
 - apiUrl="https://your-api-url" (required)
 - buttonStyle="button" or "link" (optional) (default=button)
 - buttonColor="#0369a1" (optional) - applies to button background if buttonStyle = button, or text if buttonStyle = link (default=#0369a1 )
@@ -44,3 +45,23 @@ Put the tag on the page where you'd like the button that triggers the Form Dialo
 #### Example
 
 `<contact-form apiUrl="https://your-api-url" buttonStyle="button" buttonColor="#008000" buttonText="Send Me A Message" dialogTitle="Drop Me A Line"></contact-form>`
+
+## FundraisingBar.js
+
+A simple animated bar to display the progress of a fundraising effort
+
+Header tag:
+
+`<script src="https://paulcushing.dev/web-components/fundraisingBar.js"></script>`
+
+Put this tag on the page where you want the bar to be displayed:
+
+`<fundraising-bar currentAmount="503.27" goal="1000000" time="4" primaryColor="#0400ff">`
+
+### Attributes:
+
+- currentAmount="120.45" (required)
+- goal="500" (required)
+- time="4" (optional) - time in seconds - default is 4 seconds
+- primaryColor="#00008B" (optional)
+- secondaryColor="#828282" (optional)
