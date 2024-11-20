@@ -46,6 +46,8 @@ Put the tag on the page where you'd like the button that triggers the Form Dialo
 
 `<contact-form apiUrl="https://your-api-url" buttonStyle="button" buttonColor="#008000" buttonText="Send Me A Message" dialogTitle="Drop Me A Line"></contact-form>`
 
+<br />
+
 ## FundraisingBar.js
 
 A simple animated bar to display the progress of a fundraising effort
