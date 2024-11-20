@@ -48,10 +48,10 @@ class FundraisingBar extends HTMLElement {
               width: 0%;
               background-color: rgba(0, 0, 139, 1);
                 overflow:hidden;
-                -webkit-transition: width 4s cubic-bezier(0, 0, 0.58, 1);
-                -moz-transition: width 4s cubic-bezier(0, 0, 0.58, 1);
-                -o-transition: width 4s cubic-bezier(0, 0, 0.58, 1);
-                transition: width 4s cubic-bezier(0, 0, 0.58, 1);
+                -webkit-transition: width 4s cubic-bezier(.42,.98,.63,.98)
+                -moz-transition: width 4s cubic-bezier(.42,.98,.63,.98)
+                -o-transition: width 4s cubic-bezier(.42,.98,.63,.98)
+                transition: width 4s cubic-bezier(.42,.98,.63,.98)
             }
   
             #fundraising-wrapper > .amount-donated {
@@ -144,7 +144,7 @@ class FundraisingBar extends HTMLElement {
     }
 
     if (time !== 4) {
-      fill.style.transition = `width ${time}s cubic-bezier(0, 0, 0.58, 1)`;
+      fill.style.transition = `width ${time}s cubic-bezier(.42,.98,.63,.98)`;
     }
 
     const maxSlider = (currentValue / goalValue) * 100;
