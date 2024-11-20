@@ -25,17 +25,16 @@ class FundraisingBar extends HTMLElement {
         <style>
             #fundraising-wrapper {
               font-family: Arial;
-              width: 600px;
-              margin: 40px auto;
               display: flex;
               flex-direction: column;
               justify-content: center;
+              margin: 20px;
             }
   
             #fundraising-wrapper > .slider {
               height: 40px;
-              width: 500px;
-              margin: 20px auto;
+              width: 100%;
+              margin-bottom: 5px;
               background-color: rgba(145, 145, 145, 0.2);
               border-radius: 20px;
               overflow: hidden;
@@ -58,13 +57,13 @@ class FundraisingBar extends HTMLElement {
             #fundraising-wrapper > .amount-donated {
               color: rgba(0, 0, 139, 1);
               position: relative;
-              font-size: 2rem;
+              font-size: clamp(14px, 4vw, 36px);
               margin: 0 auto;
             }
   
             #fundraising-wrapper > .amount-donated > span {
               color: rgba(145, 145, 145, 0.7);
-              font-size: 1.4rem;
+              font-size: clamp(12px, 3.6vw, 24px);
             }
         </style>
         <div id="fundraising-wrapper">
@@ -96,8 +95,8 @@ class FundraisingBar extends HTMLElement {
       );
       return;
     }
-    const currentValue = this.getAttribute("currentAmount") || 0;
-    const goalValue = this.getAttribute("goal") || 100;
+    const currentValue = parseInt(this.getAttribute("currentAmount")) || 0;
+    const goalValue = parseInt(this.getAttribute("goal")) || 100;
     const time = this.getAttribute("time") || 4;
 
     /* Set the variables to dom parts */
@@ -155,10 +154,14 @@ class FundraisingBar extends HTMLElement {
 
     function formatNumber(num) {
       return num.toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
       });
     }
+
+    const formattedGoalValue = formatNumber(goalValue);
 
     function animate(totalTime) {
       const startTime = Date.now();
@@ -175,9 +178,9 @@ class FundraisingBar extends HTMLElement {
         );
 
         const currentDisplayValue = currentValue * (percentComplete / 100);
-        const formattedValueDisplay = `$${formatNumber(
+        const formattedValueDisplay = `${formatNumber(
           currentDisplayValue
-        )} of <span>$${formatNumber(goalValue)} goal</span>`;
+        )} <span>of ${formattedGoalValue} goal</span>`;
         currentValueDisplay.innerHTML = formattedValueDisplay;
 
         // Stop when complete
