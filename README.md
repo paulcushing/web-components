@@ -68,3 +68,5 @@ Put this tag on the page where you want the bar to be displayed:
 - time="4" (optional) - time in seconds - default is 4 seconds
 - primaryColor="#00008B" (optional)
 - secondaryColor="#828282" (optional)
+
+Simple demo at https://paulcushing.dev/fundraisingBar.html
