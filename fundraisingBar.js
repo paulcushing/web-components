@@ -8,6 +8,7 @@
  *
  *  Attributes:
  *   currentAmount="120.45" (required)
+ *   units="$" (optional) - default is "$" - can be any string (pounds, turkeys, etc.)
  *   goal="500" (required)
  *   time="4" (optional) - time in seconds - default is 4 seconds
  *   primaryColor="#000000" (optional)
@@ -22,57 +23,57 @@ class FundraisingBar extends HTMLElement {
     const template = document.createElement("template");
     template.setAttribute("id", "fundraisingBarTemplate");
     template.innerHTML = `
-        <style>
-            #fundraising-wrapper {
-              font-family: Arial;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              margin: 20px;
-            }
-  
-            #fundraising-wrapper > .slider {
-              height: 40px;
-              width: 100%;
-              margin-bottom: 5px;
-              background-color: rgba(145, 145, 145, 0.2);
-              border-radius: 20px;
-              overflow: hidden;
-            }
-  
-            #fundraising-wrapper > .slider > .fill {
-              position: relative;
-              top: 0;
-              left: 0;
-              height: 100%;
-              width: 0%;
-              background-color: rgba(0, 0, 139, 1);
-                overflow:hidden;
-                -webkit-transition: width 4s cubic-bezier(.42,.98,.63,.98)
-                -moz-transition: width 4s cubic-bezier(.42,.98,.63,.98)
-                -o-transition: width 4s cubic-bezier(.42,.98,.63,.98)
-                transition: width 4s cubic-bezier(.42,.98,.63,.98)
-            }
-  
-            #fundraising-wrapper > .amount-donated {
-              color: rgba(0, 0, 139, 1);
-              position: relative;
-              font-size: clamp(14px, 4vw, 36px);
-              margin: 0 auto;
-            }
-  
-            #fundraising-wrapper > .amount-donated > span {
-              color: rgba(145, 145, 145, 0.7);
-              font-size: clamp(12px, 3.6vw, 24px);
-            }
-        </style>
-        <div id="fundraising-wrapper">
-          <div class="slider">
-            <div class="fill"></div>
-          </div>
-          <p class="amount-donated"><span></span></p>
+      <style>
+          #fundraising-wrapper {
+            font-family: Arial;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 20px;
+          }
+
+          #fundraising-wrapper > .slider {
+            height: 40px;
+            width: 100%;
+            margin-bottom: 5px;
+            background-color: rgba(145, 145, 145, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+          }
+
+          #fundraising-wrapper > .slider > .fill {
+            position: relative;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background-color: rgba(0, 0, 139, 1);
+              overflow:hidden;
+              -webkit-transition: width 4s cubic-bezier(.42,.98,.63,.98)
+              -moz-transition: width 4s cubic-bezier(.42,.98,.63,.98)
+              -o-transition: width 4s cubic-bezier(.42,.98,.63,.98)
+              transition: width 4s cubic-bezier(.42,.98,.63,.98)
+          }
+
+          #fundraising-wrapper > .amount-donated {
+            color: rgba(0, 0, 139, 1);
+            position: relative;
+            font-size: clamp(14px, 4vw, 36px);
+            margin: 0 auto;
+          }
+
+          #fundraising-wrapper > .amount-donated > span {
+            color: rgba(145, 145, 145, 0.7);
+            font-size: clamp(12px, 3.6vw, 24px);
+          }
+      </style>
+      <div id="fundraising-wrapper">
+        <div class="slider">
+          <div class="fill"></div>
         </div>
-        `;
+        <p class="amount-donated"><span></span></p>
+      </div>
+      `;
 
     let templateContent = template.content;
     const shadowRoot = this.attachShadow({ mode: "open" });
@@ -80,7 +81,14 @@ class FundraisingBar extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["currentAmount", "goal", "time", "primaryColor", "secondaryColor"];
+    return [
+      "units",
+      "currentAmount",
+      "goal",
+      "time",
+      "primaryColor",
+      "secondaryColor",
+    ];
   }
 
   attributeChangedCallback(property, oldValue, newValue) {
@@ -98,6 +106,7 @@ class FundraisingBar extends HTMLElement {
     const currentValue = parseInt(this.getAttribute("currentAmount")) || 0;
     const goalValue = parseInt(this.getAttribute("goal")) || 100;
     const time = this.getAttribute("time") || 4;
+    const units = this.getAttribute("units") || "$";
 
     /* Set the variables to dom parts */
     const component = this.shadowRoot;
@@ -152,7 +161,7 @@ class FundraisingBar extends HTMLElement {
     let i = 0;
     const animationTime = time * 1000; //in ms
 
-    function formatNumber(num) {
+    function formatNumberDollars(num) {
       return num.toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
@@ -161,7 +170,17 @@ class FundraisingBar extends HTMLElement {
       });
     }
 
-    const formattedGoalValue = formatNumber(goalValue);
+    function formatNumberOther(num) {
+      return num.toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
+    }
+
+    const goalDisplayValue =
+      units === "$"
+        ? formatNumberDollars(goalValue)
+        : formatNumberOther(goalValue) + " " + units;
 
     function animate(totalTime) {
       const startTime = Date.now();
@@ -177,10 +196,12 @@ class FundraisingBar extends HTMLElement {
           100
         );
 
-        const currentDisplayValue = currentValue * (percentComplete / 100);
-        const formattedValueDisplay = `${formatNumber(
-          currentDisplayValue
-        )} <span>of ${formattedGoalValue} goal</span>`;
+        const currentDisplayValue =
+          units === "$"
+            ? formatNumberDollars(currentValue * (percentComplete / 100))
+            : formatNumberOther(currentValue * (percentComplete / 100));
+
+        const formattedValueDisplay = `${currentDisplayValue} <span>of goal ${goalDisplayValue}</span>`;
         currentValueDisplay.innerHTML = formattedValueDisplay;
 
         // Stop when complete

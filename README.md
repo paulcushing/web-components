@@ -63,6 +63,7 @@ Put this tag on the page where you want the bar to be displayed:
 ### Attributes:
 
 - currentAmount="120.45" (required)
+- units="$" (optional) - default is USD $ - can use any string (pounds, turkeys, etc.)
 - goal="500" (required)
 - time="4" (optional) - time in seconds - default is 4 seconds
 - primaryColor="#00008B" (optional)
