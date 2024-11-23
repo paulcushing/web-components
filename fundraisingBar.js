@@ -49,10 +49,10 @@ class FundraisingBar extends HTMLElement {
             width: 0%;
             background-color: rgba(0, 0, 139, 1);
               overflow:hidden;
-              -webkit-transition: width 4s cubic-bezier(.42,.98,.63,.98)
-              -moz-transition: width 4s cubic-bezier(.42,.98,.63,.98)
-              -o-transition: width 4s cubic-bezier(.42,.98,.63,.98)
-              transition: width 4s cubic-bezier(.42,.98,.63,.98)
+              -webkit-transition: width 4s cubic-bezier(.42,.98,.63,.98);
+              -moz-transition: width 4s cubic-bezier(.42,.98,.63,.98);
+              -o-transition: width 4s cubic-bezier(.42,.98,.63,.98);
+              transition: width 4s cubic-bezier(.42,.98,.63,.98);
           }
 
           #fundraising-wrapper > .amount-donated {
