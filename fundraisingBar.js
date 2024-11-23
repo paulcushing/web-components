@@ -8,7 +8,6 @@
  *
  *  Attributes:
  *   currentAmount="120.45" (required)
- *   units="$" (optional) - default is "$" - can be any string (pounds, turkeys, etc.)
  *   goal="500" (required)
  *   time="4" (optional) - time in seconds - default is 4 seconds
  *   primaryColor="#000000" (optional)
@@ -55,14 +54,14 @@ class FundraisingBar extends HTMLElement {
               transition: width 4s cubic-bezier(.42,.98,.63,.98);
           }
 
-          #fundraising-wrapper > .amount-donated {
+          #fundraising-wrapper > .donated {
             color: rgba(0, 0, 139, 1);
             position: relative;
             font-size: clamp(14px, 4vw, 36px);
             margin: 0 auto;
           }
 
-          #fundraising-wrapper > .amount-donated > span {
+          #fundraising-wrapper > .donated > span {
             color: rgba(145, 145, 145, 0.7);
             font-size: clamp(12px, 3.6vw, 24px);
           }
@@ -71,7 +70,7 @@ class FundraisingBar extends HTMLElement {
         <div class="slider">
           <div class="fill"></div>
         </div>
-        <p class="amount-donated"><span></span></p>
+        <p class="donated"><span></span></p>
       </div>
       `;
 
@@ -111,7 +110,7 @@ class FundraisingBar extends HTMLElement {
     /* Set the variables to dom parts */
     const component = this.shadowRoot;
     const fill = component.querySelector(".fill");
-    const currentValueDisplay = component.querySelector(".amount-donated");
+    const currentValueDisplay = component.querySelector(".donated");
 
     function hexToRgba(hex, alpha) {
       // Remove the # if present
@@ -137,19 +136,19 @@ class FundraisingBar extends HTMLElement {
     /* Set colors */
     if (this.getAttribute("primaryColor")) {
       fill.style.backgroundColor = this.getAttribute("primaryColor");
-      component.querySelector(".amount-donated").style.color =
+      component.querySelector(".donated").style.color =
         this.getAttribute("primaryColor");
     }
 
+    let subColor;
+
     if (this.getAttribute("secondaryColor")) {
-      component.querySelector(".slider").style.color = hexToRgba(
+      component.querySelector(".slider").style.background = hexToRgba(
         this.getAttribute("secondaryColor"),
         0.2
       );
-      component.querySelector(".amount-donated > span").style.color = hexToRgba(
-        this.getAttribute("secondaryColor"),
-        0.7
-      );
+
+      subColor = hexToRgba(this.getAttribute("secondaryColor"), 0.7);
     }
 
     if (time !== 4) {
@@ -201,7 +200,9 @@ class FundraisingBar extends HTMLElement {
             ? formatNumberDollars(currentValue * (percentComplete / 100))
             : formatNumberOther(currentValue * (percentComplete / 100));
 
-        const formattedValueDisplay = `${currentDisplayValue} <span>of goal ${goalDisplayValue}</span>`;
+        const formattedValueDisplay = `${currentDisplayValue} <span${
+          subColor ? " style='color: " + subColor + "'" : ""
+        }>of goal ${goalDisplayValue}</span>`;
         currentValueDisplay.innerHTML = formattedValueDisplay;
 
         // Stop when complete
@@ -210,13 +211,21 @@ class FundraisingBar extends HTMLElement {
         }
       }, interval);
 
-      // Optional: Return the interval timer in case you want to cancel it manually
       return progressTimer;
     }
 
     window.addEventListener("load", function () {
-      animate(animationTime);
-      fill.style.width = maxSlider + "%";
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animate(animationTime);
+            fill.style.width = maxSlider + "%";
+            observer.disconnect();
+          }
+        });
+      });
+
+      observer.observe(component.querySelector("#fundraising-wrapper"));
     });
   }
 }
