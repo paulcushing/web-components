@@ -38,6 +38,7 @@ class FundraisingBar extends HTMLElement {
             background-color: rgba(145, 145, 145, 0.2);
             border-radius: 20px;
             overflow: hidden;
+            text-align: left;
           }
 
           #fundraising-wrapper > .slider > .fill {
