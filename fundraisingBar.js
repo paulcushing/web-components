@@ -203,7 +203,7 @@ class FundraisingBar extends HTMLElement {
 
         const formattedValueDisplay = `${currentDisplayValue} <span${
           subColor ? " style='color: " + subColor + "'" : ""
-        }>of goal ${goalDisplayValue}</span>`;
+        }>of ${goalDisplayValue} Goal</span>`;
         currentValueDisplay.innerHTML = formattedValueDisplay;
 
         // Stop when complete
